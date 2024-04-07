@@ -15,6 +15,7 @@ commercial Kubernetes on NixOS package that includes...
 - A fully configured Kubernetes distribution, ready for application deployments.
 - Declarative management through [Isogram Architect](https://www.isogram.com/products/architect).
 - Comprehensive backup and migration strategy to protect against cluster failures.
+- A set of base packages fully separate from `nixpkgs` with a dedicated security team delivering timely security patches.
 - Support plan tailored to your needs.
 
 Email `sales@isogram.com` for more information.
