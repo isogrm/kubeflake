@@ -60,5 +60,10 @@
           }
         )
     );
+
+    nixosModule = {packageSet, ...}:
+      nixpkgs.lib.mkMerge [
+        ((import ./modules/cri-o) packageSet)
+      ];
   };
 }
