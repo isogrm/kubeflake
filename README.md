@@ -9,8 +9,8 @@ you can use any supported version of Kubernetes, even if it isn't in `nixpkgs`.
 This is not a full Kubernetes distribution, but it allows you to build your own with
 tools like `kubeadm`.
 
-A full Kubernetes distribution is available with paid support as part of a commercial package:
-[Isogram Kubernetes Engine](https://www.isogram.com/products/kubernetes). It includes...
+The [Isogram Kubernetes Engine](https://www.isogram.com/products/kubernetes) distribution is a
+commercial Kubernetes on NixOS package that includes...
 
 - A fully configured Kubernetes distribution, ready for application deployments.
 - Declarative management through [Isogram Architect](https://www.isogram.com/products/architect).
