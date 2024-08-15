@@ -22,7 +22,7 @@ buildGoModule rec {
     owner = "cri-o";
     repo = "cri-o";
     rev = "v${version}";
-    sha256 = versionData.cri-o.hash;
+    sha256 = versionData.cri-o.sha256;
   };
   vendorHash = null;
 

@@ -2,7 +2,7 @@
   description = "";
 
   # Nixpkgs / NixOS version to use.
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.11";
+  inputs.nixpkgs.url = "nixpkgs/nixos-24.05";
 
   outputs = {
     self,
@@ -12,31 +12,40 @@
   # see <https://kubernetes.io/releases/>.
   let
     versionList = {
+      # EOL 2025-10-28
+      v1_31 = {
+        version = "1.31.0";
+        sha256 = "sha256-Oy638nIuz2xWVvMGWHUeI4T7eycXIfT+XHp0U7h8G9w=";
+        cri-o = {
+          version = "1.30.4";
+          sha256 = "sha256-PfG5RlUmMGMduTApdlHoI+4kdRprvWXeXZDkd6brVkM=";
+        };
+      };
+      # EOL 2025-02-28
+      v1_30 = {
+        version = "1.30.3";
+        sha256 = "sha256-AJ2EQVaW96XzKp7ZaKfsija+fWmkvy0g3qQH0VFcmsQ=";
+        cri-o = {
+          version = "1.30.4";
+          sha256 = "sha256-PfG5RlUmMGMduTApdlHoI+4kdRprvWXeXZDkd6brVkM=";
+        };
+      };
       # EOL 2025-02-28
       v1_29 = {
-        version = "1.29.2";
-        hash = "sha256-DFQaDlp8CqN0jKTVO5N9ZQYyM2gm/VnQfO4/bfvYrTE=";
+        version = "1.29.7";
+        sha256 = "sha256-JlKUuYBGMZvPWhzmJyYkhJ1llWAdr/TJk0Ud04KGmXI=";
         cri-o = {
-          version = "1.29.2";
-          hash = "sha256-il28u2+Jv2gh6XqRV4y6u0FDZ4flmcp+bOj9aibL+ro=";
+          version = "1.29.7";
+          sha256 = "sha256-QtgD05kpbJmZm4+qSjicHr6Dy5FjeSVSFaCGOFQlb4A=";
         };
       };
       # EOL 2024-10-28
       v1_28 = {
-        version = "1.28.7";
-        hash = "sha256-Qhx5nB4S5a8NlRhxQrD1U4oOCMLxJ9XUk2XemwAwe5k=";
+        version = "1.28.12";
+        sha256 = "sha256-6N22csGx/8KTiULlPuh+O9K0Ei6pvbIsUcQlA57GIfs=";
         cri-o = {
-          version = "1.28.4";
-          hash = "sha256-uEU5kBOHvlktbo9Fhf2LSWnzmNB8+FDaL/Xoy0XA03A=";
-        };
-      };
-      # EOL 2024-06-28
-      v1_27 = {
-        version = "1.27.11";
-        hash = "sha256-n++nAOvyTjCJVKZfDzFqPj6cjzzLRcrMU7y4QVGDLVk=";
-        cri-o = {
-          version = "1.27.4";
-          hash = "sha256-N5O8rO+LBE7Zb17HBlkt8nrOuOP04dj6gwYP/Tfih/0=";
+          version = "1.28.9";
+          sha256 = "sha256-O7MdNtYo2Md0q2If+8GM7fLkWCv85lPmmEuppRNn7zc=";
         };
       };
     };
