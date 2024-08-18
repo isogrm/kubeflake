@@ -1,15 +1,14 @@
-{
-  lib,
-  buildGoModule,
-  fetchFromGitHub,
-  which,
-  makeWrapper,
-  rsync,
-  installShellFiles,
-  runtimeShell,
-  nixosTests,
-  versionData,
-  components ? [
+{ lib
+, buildGoModule
+, fetchFromGitHub
+, which
+, makeWrapper
+, rsync
+, installShellFiles
+, runtimeShell
+, nixosTests
+, versionData
+, components ? [
     "cmd/kubelet"
     "cmd/kube-apiserver"
     "cmd/kube-controller-manager"
@@ -17,7 +16,8 @@
     "cmd/kube-scheduler"
     "cmd/kubectl"
     "cmd/kubectl-convert"
-  ],
+  ]
+,
 }:
 buildGoModule rec {
   pname = "kubernetes";
@@ -34,16 +34,16 @@ buildGoModule rec {
 
   doCheck = false;
 
-  nativeBuildInputs = [makeWrapper which rsync installShellFiles];
+  nativeBuildInputs = [ makeWrapper which rsync installShellFiles ];
 
-  outputs = ["out" "man" "pause"];
+  outputs = [ "out" "man" "pause" ];
 
-  patches = [./fixup-addonmanager-lib-path.patch];
+  patches = [ ./fixup-addonmanager-lib-path.patch ];
 
   WHAT = lib.concatStringsSep " " ([
-      "cmd/kubeadm"
-    ]
-    ++ components);
+    "cmd/kubeadm"
+  ]
+  ++ components);
 
   buildPhase = ''
     runHook preBuild
@@ -89,7 +89,7 @@ buildGoModule rec {
     description = "Production-Grade Container Orchestration";
     license = licenses.asl20;
     homepage = "https://kubernetes.io";
-    maintainers = [];
+    maintainers = [ ];
     platforms = platforms.linux;
   };
 
