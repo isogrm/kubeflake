@@ -11,6 +11,7 @@
 , lvm2
 , pkg-config
 , nixosTests
+, go-md2man
 , versionData
 ,
 }:
@@ -29,7 +30,7 @@ buildGoModule rec {
   doCheck = false;
 
   outputs = [ "out" "man" ];
-  nativeBuildInputs = [ installShellFiles pkg-config ];
+  nativeBuildInputs = [ installShellFiles go-md2man pkg-config ];
 
   buildInputs =
     [
@@ -45,6 +46,7 @@ buildGoModule rec {
   BUILDTAGS = "apparmor seccomp selinux containers_image_openpgp containers_image_ostree_stub";
   buildPhase = ''
     runHook preBuild
+    sed -i 's;\thack/;\tbash ./hack/;g' Makefile
     make binaries docs BUILDTAGS="$BUILDTAGS"
     runHook postBuild
   '';
