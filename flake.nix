@@ -57,7 +57,7 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
       forAllVersions = nixpkgs.lib.genAttrs (builtins.attrNames versionList);
     in
-    rec {
+    {
       packages = forAllSystems (
         system:
         let
@@ -102,6 +102,6 @@
         ];
       };
 
-      nixosModules.default = nixosModule;
+      nixosModules.default = self.nixosModule;
     };
 }
