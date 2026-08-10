@@ -1,5 +1,5 @@
 {
-  description = "";
+  description = "Decoupled Kubernetes and CRI-O packages plus NixOS modules, independent of nixpkgs release cadence.";
 
   # Nixpkgs / NixOS version to use.
   inputs.nixpkgs.url = "nixpkgs/nixos-25.11";
@@ -56,27 +56,22 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
       forAllVersions = nixpkgs.lib.genAttrs (builtins.attrNames versionList);
-    in
-    rec {
-      packages = forAllSystems (
-        system:
+      mkPackagesFor = pkgs: forAllVersions (
+        version:
         let
-          pkgs = nixpkgsFor.${system};
+          versionData = builtins.getAttr version versionList;
         in
-        forAllVersions (
-          version:
-          let
-            versionData = builtins.getAttr version versionList;
-          in
-          {
-            kubernetes = pkgs.callPackage ./binaries/kubernetes { inherit versionData; };
-            cri-o = pkgs.callPackage ./binaries/cri-o { inherit versionData; };
-            kubectl-ctx = pkgs.callPackage ./binaries/kubectl-ctx { };
-          }
-        )
+        {
+          kubernetes = pkgs.callPackage ./binaries/kubernetes { inherit versionData; };
+          cri-o = pkgs.callPackage ./binaries/cri-o { inherit versionData; };
+          kubectl-ctx = pkgs.callPackage ./binaries/kubectl-ctx { };
+        }
       );
+    in
+    {
+      packages = forAllSystems (system: mkPackagesFor nixpkgsFor.${system});
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      formatter = forAllSystems (system: nixpkgsFor.${system}.nixpkgs-fmt);
 
       nixosModule = { ... }: {
         imports = [
@@ -87,19 +82,11 @@
 
         nixpkgs.overlays = [
           (final: prev: {
-            isogram.kubernetes = forAllVersions (
-              version:
-              let
-                versionData = builtins.getAttr version versionList;
-              in
-              {
-                kubernetes = final.callPackage ./binaries/kubernetes { inherit versionData; };
-                cri-o = final.callPackage ./binaries/cri-o { inherit versionData; };
-                kubectl-ctx = final.callPackage ./binaries/kubectl-ctx { };
-              }
-            );
+            isogram.kubernetes = mkPackagesFor final;
           })
         ];
       };
+
+      nixosModules.default = self.nixosModule;
     };
 }

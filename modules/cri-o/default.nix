@@ -1,7 +1,6 @@
 { config
 , lib
 , pkgs
-, utils
 , ...
 }:
 with lib; let
@@ -49,7 +48,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = [ cfg.package pkgs.cri-tools ];
 
-    environment.etc."crictl.yaml".source = utils.copyFile "${config.isogram.cri-o.package.src}/crictl.yaml";
+    environment.etc."crictl.yaml".source = "${cfg.package}/etc/crictl.yaml";
     environment.etc."crio/crio.conf.d/00-nix.conf".source = cfgFile;
 
     # Enable common /etc/containers configuration
