@@ -101,5 +101,7 @@
           })
         ];
       };
+
+      nixosModules.default = nixosModule;
     };
 }
