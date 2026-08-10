@@ -230,7 +230,7 @@ in
 
           # Create /var/lib/kubelet and /etc/kubernetes with the correct permissions
           StateDirectory = "kubelet";
-          ConfiguratonDirectory = "kubernetes";
+          ConfigurationDirectory = "kubernetes";
         };
       };
     };
