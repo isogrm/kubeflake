@@ -56,25 +56,20 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
       forAllVersions = nixpkgs.lib.genAttrs (builtins.attrNames versionList);
+      mkPackagesFor = pkgs: forAllVersions (
+        version:
+        let
+          versionData = builtins.getAttr version versionList;
+        in
+        {
+          kubernetes = pkgs.callPackage ./binaries/kubernetes { inherit versionData; };
+          cri-o = pkgs.callPackage ./binaries/cri-o { inherit versionData; };
+          kubectl-ctx = pkgs.callPackage ./binaries/kubectl-ctx { };
+        }
+      );
     in
     {
-      packages = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgsFor.${system};
-        in
-        forAllVersions (
-          version:
-          let
-            versionData = builtins.getAttr version versionList;
-          in
-          {
-            kubernetes = pkgs.callPackage ./binaries/kubernetes { inherit versionData; };
-            cri-o = pkgs.callPackage ./binaries/cri-o { inherit versionData; };
-            kubectl-ctx = pkgs.callPackage ./binaries/kubectl-ctx { };
-          }
-        )
-      );
+      packages = forAllSystems (system: mkPackagesFor nixpkgsFor.${system});
 
       formatter = forAllSystems (system: nixpkgsFor.${system}.nixpkgs-fmt);
 
@@ -87,17 +82,7 @@
 
         nixpkgs.overlays = [
           (final: prev: {
-            isogram.kubernetes = forAllVersions (
-              version:
-              let
-                versionData = builtins.getAttr version versionList;
-              in
-              {
-                kubernetes = final.callPackage ./binaries/kubernetes { inherit versionData; };
-                cri-o = final.callPackage ./binaries/cri-o { inherit versionData; };
-                kubectl-ctx = final.callPackage ./binaries/kubectl-ctx { };
-              }
-            );
+            isogram.kubernetes = mkPackagesFor final;
           })
         ];
       };
