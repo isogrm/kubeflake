@@ -1,5 +1,5 @@
 {
-  description = "";
+  description = "Decoupled Kubernetes and CRI-O packages plus NixOS modules, independent of nixpkgs release cadence.";
 
   # Nixpkgs / NixOS version to use.
   inputs.nixpkgs.url = "nixpkgs/nixos-25.11";
